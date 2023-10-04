@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Vibration,
-  PermissionsAndroid,
   TextInput,
   Alert, Modal
 } from "react-native";
@@ -17,22 +16,25 @@ import { saveCountToLocalStorage } from "../config/asyncStorage";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-const MainCounter = ({ isVibrate }: { isVibrate: boolean }) => {
-  const [count, setCount] = useState(0);
+const MainCounter = ({ isVibrate,count }: { isVibrate: boolean, count: number}) => {
+const [localCount, setLocalCount] = useState(count);
   const { mode } = useContext(ThemeContext);
   const [name, setName] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const activeColors = colors[mode];
   const navigation = useNavigation<StackNavigationProp<any>>();
 
+  useEffect(() => {
+    setLocalCount(count);
+  }, [count]);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   const saveCount = () => {
     if (name && count >= 0) {
-      saveCountToLocalStorage(count, name);
+      saveCountToLocalStorage(localCount, name);
       setName('');
-      setCount(0);
+      setLocalCount(0);
       toggleModal();
       navigation.navigate("SettingsPage");
     } else {
@@ -46,20 +48,20 @@ const MainCounter = ({ isVibrate }: { isVibrate: boolean }) => {
     if (isVibrate) {
       Vibration.vibrate(100);
     }
-    setCount(count + 1);
+    setLocalCount(parseInt(String(localCount)) + 1);
   };
 
   const decrementCount = () => {
-    if (count > 0) {
+    if (localCount > 0) {
       if (isVibrate) {
         Vibration.vibrate(100);
       }
-      setCount(count - 1);
+      setLocalCount(localCount - 1);
     }
   };
 
   const resetCount = () => {
-    setCount(0);
+    setLocalCount(0);
   };
 
   const styles = StyleSheet.create({
@@ -201,7 +203,7 @@ const MainCounter = ({ isVibrate }: { isVibrate: boolean }) => {
     <View style={[styles.container, { backgroundColor: activeColors.primaryBackground }]}>
       <View style={styles.textContainer}>
         <Text style={styles.title}>Tasbeeh Counter</Text>
-        <Text style={styles.countText}>{count}</Text>
+        <Text style={styles.countText}>{localCount}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, { backgroundColor: activeColors.plusBackground }]} onPress={incrementCount}>

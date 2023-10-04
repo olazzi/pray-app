@@ -1,11 +1,11 @@
 export const colors = {
   light: {
     primary: "#5E7D7E",
-    secondary: "#F7DC6F",
+    secondary: "#E74C3C",
     primaryBackground: "#eecaca",
     counterBackground: "#dc9e9e",
     plusBackground: "#D5DBDB",
-    resetColor: "#E74C3C",
+    resetColor: "#16A085",
     plusColor: "#16A085",
     vibrationColor: "#D4AC0D",
     text: "#333333",

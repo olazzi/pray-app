@@ -28,6 +28,8 @@ const SavedCountsPage = () => {
           text: "OK",
           onPress: async () => {
             try {
+              const filteredCounts = savedCounts.filter(item => item[0] === "theme");
+              setSavedCounts(filteredCounts);
               await AsyncStorage.clear();
               setSavedCounts([]);
               navigation.navigate("HomePage");
@@ -53,6 +55,25 @@ const SavedCountsPage = () => {
 
     fetchSavedCounts();
   }, [isFocused]);
+ const handleItemPress = (item:any) => {
+   Alert.alert(
+      "Continue",
+      `Are you sure you want to Continue the saved count "${item[0]}"?`,
+     [
+       {
+         text: "Cancel",
+         style: "cancel",
+       },
+       {
+         text: "OK",
+         onPress: async () => {
+           navigation.navigate("HomePage", { count: item[1] });
+         },
+       },
+     ],
+   )
+
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: activeColors.SavedCountsBackground }]}>
@@ -64,20 +85,21 @@ const SavedCountsPage = () => {
       {savedCounts.length > 0 ? (
 
         <FlatList
-          data={savedCounts}
+          data={savedCounts.filter(item => item[0] !== "theme")}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={[styles.listItem, { borderColor: activeColors.border }]}
               onPress={() => {
-
+                handleItemPress(item);
               }}
             >
               <Text style={[styles.listItemText, { color: activeColors.text }]}>{item[0]}</Text>
-              <Text style={[styles.listItemText2, { color: activeColors.text },{backgroundColor:activeColors.itemBackground}]}>{item[1]}</Text>
+              <Text style={[styles.listItemText2, { color: activeColors.text }, { backgroundColor: activeColors.itemBackground }]}>{item[1]}</Text>
             </TouchableOpacity>
           )}
         />
+
       ) : (
         <Text style={{ color: activeColors.text }}>No saved counts found.</Text>
       )}

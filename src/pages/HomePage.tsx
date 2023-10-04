@@ -5,11 +5,17 @@ import { colors } from "../config/colors";
 import MainCounter from "../components/mainCounter";
 import VibrationIcon from "../assets/vibrationIcon";
 import DarkModeIcon from "../assets/darkModeIcon";
-
+import { useRoute } from "@react-navigation/native";
+interface RouteParams {
+  count?: number;
+}
 const HomePage = () => {
   const { mode, updateTheme } = useContext(ThemeContext);
   const [isActive, setIsActive] = useState(mode === "dark");
   const [isVibration, setIsVibration] = useState(false);
+  const route = useRoute();
+  const params = route.params as RouteParams;
+  const count = params?.count || 0;
   const handleSwitch = () => {
     const theme = isActive ? "light" : "dark";
     updateTheme(theme);
@@ -54,7 +60,7 @@ const HomePage = () => {
         <DarkModeIcon width={32} height={32} color={activeColors.vibrationColor} />
       </TouchableOpacity>
       </View>
-      <MainCounter isVibrate={isVibration}/>
+      <MainCounter isVibrate={isVibration} count={count}/>
 
     </View>
   );
