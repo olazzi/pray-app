@@ -110,21 +110,18 @@ const SavedCountsPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     padding: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#000",
   },
   listItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomWidth: 1,
     borderRadius: 8,
-    borderColor: "gray",
     marginBottom: 16,
     padding: 16,
   },
