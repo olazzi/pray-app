@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
 
@@ -12,6 +12,8 @@ import HomePage from "./src/pages/HomePage";
 import HomeIcon from "./src/assets/homeIcon";
 import SettingIcon from "./src/assets/settingIcon";
 import SavedCountsPage from "./src/pages/SavedCountsPage";
+import { ThemeContext } from "./src/contexts/ThemeContext";
+import { colors } from "./src/config/colors";
 
 const Tabs = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -41,17 +43,17 @@ const SettingsStackScreen = () => (
 );
 
 function App(): JSX.Element {
-  //const { mode } = useContext(ThemeContext);
-  // const activeColors = colors[mode];
+  const { mode } = useContext(ThemeContext);
+  const activeColors = colors[mode];
 
   return (
     <Tabs.Navigator
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "#FF0000",
-        tabBarInactiveTintColor: "#000000",
+        tabBarActiveTintColor: activeColors.primary,
+        tabBarInactiveTintColor: activeColors.secondary,
         tabBarStyle: {
-          backgroundColor: "#F5F6FA",
+          backgroundColor: activeColors.primaryBackground,
           borderTopWidth: 0,
         },
       }}
@@ -79,7 +81,7 @@ function App(): JSX.Element {
 
 const styles = StyleSheet.create({
   backgroundStyle: {
-    backgroundColor: "#fff"
+    backgroundColor: "transparent"
   },
 });
 
